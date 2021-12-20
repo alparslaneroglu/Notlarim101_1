@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Notlarim101.BusinessLayer;
 using Notlarim101.Entity;
+using Notlarim101.WebApp.ViewModel;
 
 namespace Notlarim101.WebApp.Controllers
 {
@@ -21,14 +22,14 @@ namespace Notlarim101.WebApp.Controllers
             //test.CommentTest();
 
             NoteManager nm = new NoteManager();
-            
-            return View(nm.GetAllNotes().OrderByDescending(s=>s.ModifiedOn).ToList());
+
+            return View(nm.GetAllNotes().OrderByDescending(s => s.ModifiedOn).ToList());
         }
 
-        
+
         public ActionResult ByCategoryId(int? id)
         {
-            if (id==null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -43,7 +44,7 @@ namespace Notlarim101.WebApp.Controllers
 
             return View("Index", cat.Notes.OrderByDescending(s => s.ModifiedOn).ToList());
         }
-        
+
         public ActionResult ByCategoryTitle(string id)
         {
             if (id == null)
@@ -60,6 +61,64 @@ namespace Notlarim101.WebApp.Controllers
             }
 
             return View("Index", cat.Notes.OrderByDescending(s => s.ModifiedOn).ToList());
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(LoginViewModel model)
+        {
+            return View();
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Register(RegisterViewModel model)
+        {
+            //bool hasError = false;
+            if (ModelState.IsValid) //Modelden gelenlerin şablona uyup uymadığını kontrol et.
+            {
+                if (model.Username == "aaa")
+                {
+                    ModelState.AddModelError("", "Kullanıcı adı kullanılıyor.");
+                  //  hasError = true;
+                }
+                if (model.Email == "aaa@aaa.com")
+                {
+                    ModelState.AddModelError("", "Bu Email üzerine kayıtlı bir hesap zaten mevcut.");
+                    //hasError = true;
+                }
+
+                foreach (var item in ModelState)
+                {
+                    if (item.Value.Errors.Count>0)
+                    {
+                        return View(model);
+                    }
+
+                }
+                return RedirectToAction("RegisterOk");
+
+                //if (hasError == true)
+                //{
+                //    return View(model);
+                //}
+                //else
+                //{
+                //    return RedirectToAction("RegisterOk");
+                //}
+            }
+            return View(model);
+        }
+
+        public ActionResult RegisterOk()
+        {
+            return View();
         }
     }
 }
