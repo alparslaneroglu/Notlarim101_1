@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Notlarim101.BusinessLayer;
 using Notlarim101.Entity;
-using Notlarim101.WebApp.ViewModel;
+using Notlarim101.Entity.ValueObject;
 
 namespace Notlarim101.WebApp.Controllers
 {
@@ -70,7 +70,21 @@ namespace Notlarim101.WebApp.Controllers
         [HttpPost]
         public ActionResult Login(LoginViewModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+
+                NotlarimUserManager num = new NotlarimUserManager();
+                BusinessLayerResult<NotlarimUser> res = num.LoginUser(model);
+                if (res.Errors.Count>0)
+                {
+                    res.Errors.ForEach(s => ModelState.AddModelError("", s));
+                    return View(model);
+                }
+                
+                Session["login"] = res.Result; //Session(oturum) a kullanıcı bilgilerini aktarma
+                return RedirectToAction("Index"); //Yönlendirme
+            }
+            return View(model);
         }
 
         public ActionResult Register()
@@ -83,26 +97,49 @@ namespace Notlarim101.WebApp.Controllers
             //bool hasError = false;
             if (ModelState.IsValid) //Modelden gelenlerin şablona uyup uymadığını kontrol et.
             {
-                if (model.Username == "aaa")
+                NotlarimUserManager num = new NotlarimUserManager();
+                BusinessLayerResult<NotlarimUser> res = num.RegisterUser(model);
+                if (res.Errors.Count>0)
                 {
-                    ModelState.AddModelError("", "Kullanıcı adı kullanılıyor.");
-                  //  hasError = true;
-                }
-                if (model.Email == "aaa@aaa.com")
-                {
-                    ModelState.AddModelError("", "Bu Email üzerine kayıtlı bir hesap zaten mevcut.");
-                    //hasError = true;
+                    res.Errors.ForEach(s => ModelState.AddModelError("", s));
+                    return View(model);
                 }
 
-                foreach (var item in ModelState)
-                {
-                    if (item.Value.Errors.Count>0)
-                    {
-                        return View(model);
-                    }
+                //try
+                //{
+                //    user = num.RegisterUser(model);
+                //}
+                //catch (Exception ex)
+                //{
+                //    ModelState.AddModelError("", ex.Message);
+                //}
 
-                }
-                return RedirectToAction("RegisterOk");
+                //if (user==null)
+                //{
+                //    return View(model);
+                //}
+                //return RedirectToAction("RegisterOk");
+
+                //if (model.Username == "aaa")
+                //{
+                //    ModelState.AddModelError("", "Kullanıcı adı kullanılıyor.");
+                //  //  hasError = true;
+                //}
+                //if (model.Email == "aaa@aaa.com")
+                //{
+                //    ModelState.AddModelError("", "Bu Email üzerine kayıtlı bir hesap zaten mevcut.");
+                //    //hasError = true;
+                //}
+
+                //foreach (var item in ModelState)
+                //{
+                //    if (item.Value.Errors.Count>0)
+                //    {
+                //        return View(model);
+                //    }
+
+                //}
+                //return RedirectToAction("RegisterOk");
 
                 //if (hasError == true)
                 //{
@@ -112,6 +149,7 @@ namespace Notlarim101.WebApp.Controllers
                 //{
                 //    return RedirectToAction("RegisterOk");
                 //}
+                return RedirectToAction("RegisterOk");
             }
             return View(model);
         }

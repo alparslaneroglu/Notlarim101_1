@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using Notlarim101.Core.DataAccess;
 using Notlarim101.DataAccessLayer;
 using Notlarim101.DataAccessLayer.Abstract;
+using Notlarim101.Entity;
 
 namespace Notlarim101.DataAccessLayer.EntityFramework
 {
-    public class Repository<T>:RepositoryBase,IDataAccess<T> where T : class//T nesnesi referans type olmalidir. Class lar da rt oldugu icin kisit olarak kullanilmistir.
+    public class Repository<T> : RepositoryBase, IDataAccess<T> where T : class//T nesnesi referans type olmalidir. Class lar da rt oldugu icin kisit olarak kullanilmistir.
     {
         private DbSet<T> objSet;
-        
+
         public Repository()
         {
             objSet = db.Set<T>();
@@ -42,11 +43,26 @@ namespace Notlarim101.DataAccessLayer.EntityFramework
         public int Insert(T obj)
         {
             objSet.Add(obj);
+            if (obj is MyEntityBase) // obj MyEntityBase'denmi geliyor.
+            {
+                MyEntityBase o = obj as MyEntityBase;
+                DateTime now = DateTime.Now;
+                o.CreatedOn = now;
+                o.ModifiedOn = now;
+                o.ModifiedUsername = "system";
+            }
             return Save();
         }
 
         public int Update(T obj)
         {
+            
+            if (obj is MyEntityBase)
+            {
+                MyEntityBase o = obj as MyEntityBase;
+                o.ModifiedOn = DateTime.Now;
+                o.ModifiedUsername = "system";
+            }
             return Save();
         }
 
