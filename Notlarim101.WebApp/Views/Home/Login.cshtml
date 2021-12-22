@@ -11,9 +11,16 @@
     <div class="logreg">
         <main class="form-signin">
             <form>
-                <img class="mb-4" src="/docs/5. 1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+                <img class="mb-4" src="~/images/gora.jpg" alt="" width="300" height="220">
                 <h1 class="h3 mb-3 fw-normal">Giriş Formu</h1>
                 @Html.ValidationSummary(false) 
+
+                @if (ViewBag.SetLink != null)
+                {
+                    <a href="@ViewBag.SetLink" class="btn btn-primary">Activate</a>
+                }
+
+
                 <div class="form-floating">
                     @Html.TextBoxFor(model=>model.UserName,new {@class="form-control",placeholder="Kullanici Adi", id = "floatingInput" })
                     @*<input type="text" class="form-control" id="floatingInput" placeholder="Kullanıcı Adı">*@

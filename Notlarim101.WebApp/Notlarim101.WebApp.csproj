@@ -110,6 +110,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\styles.css" />
     <Content Include="Global.asax" />
+    <Content Include="images\gora.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -130,6 +131,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Init\WebCommon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +184,10 @@
     <ProjectReference Include="..\Notlarim101.BusinessLayer\Notlarim101.BusinessLayer.csproj">
       <Project>{d202465b-24c0-47b5-ae16-cdf164a4d757}</Project>
       <Name>Notlarim101.BusinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Notlarim101.Common\Notlarim101.Common.csproj">
+      <Project>{f854997d-0d4c-41f7-b7a6-5bae3a98840b}</Project>
+      <Name>Notlarim101.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Notlarim101.Entity\Notlarim101.Entity.csproj">
       <Project>{a65ace9d-842f-41be-a9f6-8c90bcd838f4}</Project>

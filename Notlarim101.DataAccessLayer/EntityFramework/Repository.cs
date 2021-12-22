@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Notlarim101.Common;
 using Notlarim101.Core.DataAccess;
 using Notlarim101.DataAccessLayer;
 using Notlarim101.DataAccessLayer.Abstract;
@@ -49,7 +50,7 @@ namespace Notlarim101.DataAccessLayer.EntityFramework
                 DateTime now = DateTime.Now;
                 o.CreatedOn = now;
                 o.ModifiedOn = now;
-                o.ModifiedUsername = "system";
+                o.ModifiedUsername = App.Common.GetCurrentUsername();//"system";
             }
             return Save();
         }
@@ -61,7 +62,7 @@ namespace Notlarim101.DataAccessLayer.EntityFramework
             {
                 MyEntityBase o = obj as MyEntityBase;
                 o.ModifiedOn = DateTime.Now;
-                o.ModifiedUsername = "system";
+                o.ModifiedUsername = App.Common.GetCurrentUsername();
             }
             return Save();
         }

@@ -72,12 +72,15 @@ namespace Notlarim101.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 NotlarimUserManager num = new NotlarimUserManager();
                 BusinessLayerResult<NotlarimUser> res = num.LoginUser(model);
                 if (res.Errors.Count>0)
                 {
-                    res.Errors.ForEach(s => ModelState.AddModelError("", s));
+                    if (res.Errors.Find(x=>x.Code==Entity.Messages.ErrorMessageCode.UserIsNotActive)!=null)
+                    {
+                        ViewBag.SetLink = "http://Home/UserActivate/1234-2345-2345467";
+                    }
+                    res.Errors.ForEach(s => ModelState.AddModelError("", s.Message));
                     return View(model);
                 }
                 
@@ -101,7 +104,7 @@ namespace Notlarim101.WebApp.Controllers
                 BusinessLayerResult<NotlarimUser> res = num.RegisterUser(model);
                 if (res.Errors.Count>0)
                 {
-                    res.Errors.ForEach(s => ModelState.AddModelError("", s));
+                    res.Errors.ForEach(s => ModelState.AddModelError("", s.Message));
                     return View(model);
                 }
 

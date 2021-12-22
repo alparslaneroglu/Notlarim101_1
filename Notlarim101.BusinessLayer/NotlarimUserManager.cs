@@ -40,6 +40,8 @@ namespace Notlarim101.BusinessLayer
             {
                 int dbResult = ruser.Insert(new NotlarimUser
                 {
+                    Name=data.Name,
+                    Surname=data.Surname,
                     Username = data.Username,
                     Email = data.Email,
                     Password = data.Password,
